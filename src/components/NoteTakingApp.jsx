@@ -71,8 +71,18 @@ const NoteTakingApp = () => {
     try {
       const result = await markdownFileApis.add(markdown);
       showAlert("Markdown note file added successfully!!", "success");
+      setMarkdownBtn(false);
+      setFileName("");
+      setMarkdown("");
+      setGrammarErrors([]);
+      setShowMarkdown(false);
       return result.message || [];
     } catch (error) {
+      setMarkdownBtn(false);
+      setFileName("");
+      setMarkdown("");
+      setGrammarErrors([]);
+      setShowMarkdown(false);
       showAlert("Failed to add the markdown files", "warning");
       console.error("Error checking grammar:", error);
       return [];
