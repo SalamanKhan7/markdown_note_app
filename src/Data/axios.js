@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiClient = axios.create({
+const apiMarkdown = axios.create({
   baseURL: "https://markdown-apis.onrender.com",
   headers: {
     "Content-Type": "application/json",
@@ -10,7 +10,7 @@ const apiClient = axios.create({
 export const markdownFileApis = {
   add: async (markdown) => {
     try {
-      const response = await apiClient.post("/api/notes", {
+      const response = await apiMarkdown.post("/api/notes", {
         content: markdown,
       });
       return response.data;
@@ -21,7 +21,7 @@ export const markdownFileApis = {
   },
   getAll: async () => {
     try {
-      const response = await apiClient.get("/api/notes");
+      const response = await apiMarkdown.get("/api/notes");
       return response.data;
     } catch (error) {
       console.error("Error fetching departments:", error);
@@ -30,7 +30,7 @@ export const markdownFileApis = {
   },
   checkGrammer: async (text) => {
     try {
-      const response = await apiClient.post("/api/grammar/check", {
+      const response = await apiMarkdown.post("/api/grammar/check", {
         content: text,
       });
       return response.data;

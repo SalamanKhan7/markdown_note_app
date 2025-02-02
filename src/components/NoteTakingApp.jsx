@@ -5,6 +5,8 @@ import "./NoteTakingApp.css";
 import { Button, Typography, Box } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { markdownFileApis } from "../Data/axios";
+import StatusAlert from "../StatusAlert/StatusAlert";
+import axios from "axios";
 
 const NoteTakingApp = () => {
   const [markdown, setMarkdown] = useState("");
@@ -16,6 +18,9 @@ const NoteTakingApp = () => {
   const [getAllMarkdown, setGetAllMarkdown] = useState([]);
   const [grammarErrors, setGrammarErrors] = useState([]);
   const [fileName, setFileName] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("info");
 
   //add the markdown file
   const uploadMarkdown = () => {
@@ -57,7 +62,7 @@ const NoteTakingApp = () => {
 
   //handling the api of grammatical
   const handleCheckGrammar = async (text) => {
-    const errors = await checkGrammarAPI(text); // Use the API call
+    const errors = await checkGrammarAPI(text);
     setGrammarErrors(errors);
   };
 
@@ -65,8 +70,10 @@ const NoteTakingApp = () => {
   const saveNote = async () => {
     try {
       const result = await markdownFileApis.add(markdown);
+      showAlert("Markdown note file added successfully!!", "success");
       return result.message || [];
     } catch (error) {
+      showAlert("Failed to add the markdown files", "warning");
       console.error("Error checking grammar:", error);
       return [];
     }
@@ -84,14 +91,22 @@ const NoteTakingApp = () => {
       setMarkdown("");
       setMarkdownAllFiles(true);
       const result = await markdownFileApis.getAll();
+      showAlert("Get all the markdown files successfully!!", "success");
       setGetAllMarkdown(result || []);
       return;
     } catch (error) {
+      showAlert("Failed to get markdown files", "warning");
       console.error("Error checking grammar:", error);
       return [];
     }
   };
 
+  //show the alert
+  const showAlert = (message, severity) => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setAlertOpen(true);
+  };
   return (
     <Box>
       <Box className="getFile">
@@ -184,6 +199,12 @@ const NoteTakingApp = () => {
           ))}
         </Box>
       )}
+      <StatusAlert
+        open={alertOpen}
+        setOpen={setAlertOpen}
+        message={alertMessage}
+        severity={alertSeverity}
+      />
     </Box>
   );
 };
