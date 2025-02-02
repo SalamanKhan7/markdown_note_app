@@ -1,6 +1,4 @@
-import "./App.css";
-import NoteTakingApp from "./components/frontend/NoteTakingApp";
-
+import NoteTakingApp from "./components/NoteTakingApp";
 function App() {
   return (
     <div>
@@ -8,5 +6,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
